@@ -1,0 +1,39 @@
+{
+  "name": "takie",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel ./public/index.html",
+    "build": "parcel build ./public/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/firebase": "^3.2.1",
+    "@types/react": "^17.0.3",
+    "@types/react-router": "^5.1.13",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/redux": "^3.6.0",
+    "components": "^0.1.0",
+    "firebase": "^8.3.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.3",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "utils": "^0.3.1"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^17.0.3",
+    "@types/react-redux": "^7.1.16",
+    "@types/styled-components": "^5.1.9",
+    "parcel-bundler": "^1.12.5",
+    "redux-devtools-extension": "^2.13.9",
+    "styled-components": "^5.2.3",
+    "typescript": "^4.2.3"
+  }
+}
