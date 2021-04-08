@@ -25,6 +25,7 @@ const TypoMain = styled.span`
 `
 
 const MainSection = styled.div`
+
 `
 
 const ButtonContainer = styled.div`
@@ -34,8 +35,7 @@ const ButtonContainer = styled.div`
     margin: 0 auto 2em auto;
     animation: animation3 1s ease forwards 1s;
     visibility: hidden;
-    @media(max-width: 420px) {
-    }
+
 `
 
 const BoxContainer = styled.div`
@@ -48,7 +48,6 @@ const BoxContainer = styled.div`
     flex-wrap: wrap;
     visibility: hidden;
     animation: animation3 1s ease forwards 1s;
-    margin-bottom: 2em;
 `
 
 const SubTypoMain = styled(TypoMain)`
@@ -66,7 +65,7 @@ const DashboardMain:React.FC = ():JSX.Element => {
     const [activeTab, setActiveTab] = React.useState<boolean>(false)
     const {completedNotes, isLoading, newNotes} = DashboardLogic()
     return(
-<div>
+        <React.Fragment>
             <TypoMain>Your <span style={{color: "#40d812"}}>Eco</span>-Books
                 <SubTypoMain>Read to gain more knowledege<br />and get EcoPoints!</SubTypoMain>
             </TypoMain>
@@ -79,70 +78,39 @@ const DashboardMain:React.FC = ():JSX.Element => {
                 <BoxContainer>
                 {
                     activeTab ? (
-                        <>
-                        {
-                            <>
-                                { completedNotes.length > 0 ? (
-                                    <>
-                                    {
-                                        completedNotes.map((item) => (
-                                            <Box active={activeTab}  completed={true} key={item.id} note={item} />
-                                        ))
-                                        }
-                                    </>
+                        completedNotes.length > 0 ? (
+                            completedNotes.map((item) => (
+                                <Box active={activeTab}  completed={true} key={item.id} note={item} />
+                            ))
+                            ) : (
+                                isLoading ? (
+                                    <p>Loading...</p>
                                 ) : (
-                                    <>
-                                    {
-                                        isLoading ? (
-                                            <p>Loading...</p>
-                                        ) : (
-                                            <Empty style={{ display: "flex"}}>
-                                                <p style={{marginRight: "10px"}}><ShadowedText>Whoops!</ShadowedText>Nothing in here</p>
-                                                <SadFaceIcon width={30} height={30} fill="#000" />
-                                            </Empty>
-                                        )
-                                    }
-                                    </>
-                                )}
-                            </>
-                        }
-                        </>
-                    ) : (
-                        <>
-                        {
-                            <>
-                            {
-                                newNotes.length > 0 ? (
-                                <>
-                                {
-                                    newNotes.map((item, index )=> (
-                                        <Box key={item.id} note={item}/>
-                                    ))
-                                }
-                                </>
-                                ) : (
-                                    <>
-                                    {
-                                        isLoading ? (
-                                            <p>Loading...</p>
-                                        ) : (
-                                            <Empty style={{ display: "flex"}}>
-                                                <p style={{marginRight: "10px"}}><ShadowedText>Hoooray!</ShadowedText> You did all!</p>
-                                                <HappyFaceIcon width={30} height={30} fill="#000" />
-                                            </Empty>
-                                        )
-                                    }
-                                    </>
+                                    <Empty style={{ display: "flex"}}>
+                                        <p style={{marginRight: "10px"}}><ShadowedText>Whoops!</ShadowedText>Nothing in here</p>
+                                        <SadFaceIcon width={30} height={30} fill="#000" />
+                                    </Empty>
                                 )
-                            }
-                            </>
-                        }
-                        </>
+                            )
+                    ) : (
+                        newNotes.length > 0 ? (
+                            newNotes.map((item, index )=> (
+                                <Box key={item.id} note={item}/>
+                            ))
+                            ) : (
+                            isLoading ? (<p>Loading...</p>) : (
+                                <Empty style={{ display: "flex"}}>
+                                    <p style={{marginRight: "10px"}}><ShadowedText>Hoooray!</ShadowedText> You did all!</p>
+                                    <HappyFaceIcon width={30} height={30} fill="#000" />
+                                </Empty>
+                            )
+                        )
                     )
                 }   
+
                 </BoxContainer>
             </MainSection>
-        </div>
+        </React.Fragment>
     )
 }
 

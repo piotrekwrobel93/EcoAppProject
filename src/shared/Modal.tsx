@@ -23,6 +23,7 @@ const ModalShadow = styled.div`
 const ModalBox = styled.div`
     width: 100%;
     max-width: 1000px;
+    overflow: hidden;
     height: 100%;
     background-color: #fff;
     position: relative;
@@ -76,8 +77,6 @@ const ButtonWrapper = styled.div`
     justify-content: center;
     margin: 2em 0;
 `
-
-
 const Image = styled.img`
     margin: 2em 0;
     @media (max-width: 768px) {
@@ -85,18 +84,21 @@ const Image = styled.img`
         height: 200px;
     }
 `
-
 const DisabledButton = styled(Button)`
     background-color: #fff;
-    color: #40d812;
-    border: 1px solid #40d812;
+    color: #333;
+    border-color: #333;
+    &:hover {
+        color: #333;
+        border-color: #333;
+    }
 `
 
 
 type Props = {
     note: Note,
     setShowModal: UseState<boolean>,
-    completed?: boolean
+    completed?: boolean,
 }
 const Modal:React.FC<Props> = ({note, setShowModal, completed} :Props):JSX.Element => {
     
@@ -104,6 +106,13 @@ const Modal:React.FC<Props> = ({note, setShowModal, completed} :Props):JSX.Eleme
     const handleCompleteNote = () => {
         dispatch(addCompletedNote(note))
     }
+
+    React.useEffect( () => {
+        document.body.style.overflowY = "hidden"
+        return () => {
+            document.body.style.overflowY = "visible"        
+        }
+    },[])
 
 return(
     <React.Fragment>
@@ -122,7 +131,9 @@ return(
                             completed ? (
                                 <ButtonWrapper>
                                     <DisabledButton>
-                                    <CheckIcon style={{ marginRight: "5px"}} width={20} height={20} fill="#40d812" /> Done</DisabledButton>
+                                        <CheckIcon style={{ marginRight: "5px"}} width={20} height={20} fill="#333" />
+                                        Done
+                                    </DisabledButton>
                                 </ButtonWrapper>
                             ) : (
                                 <ButtonWrapper>

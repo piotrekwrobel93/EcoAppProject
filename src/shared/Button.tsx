@@ -33,12 +33,13 @@ const _Button = styled.button`
 `
 type Props = {
     children: React.ReactNode,
-    onClick?: (event:React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+    onClick?: (event:React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+    className?: string
 }
-const Button = ({children, onClick}:Props):JSX.Element => {
+const Button = ({children, className, onClick}:Props):JSX.Element => {
     return(
         <>
-         <_Button onClick={onClick}>
+         <_Button className={className} onClick={onClick}>
                 { children }
         </_Button>   
         </>

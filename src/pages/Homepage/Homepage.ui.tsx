@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { getItemFromSession } from '../../lib'
+import { useAppSelector } from '../../redux/ducks/user'
 import Button from '../../shared/Button'
 
 
@@ -57,8 +58,7 @@ const CenteredButton = styled.div`
 `
 
 
-type Props = {}
-const Homepage:React.FC = ({} :Props):JSX.Element => {
+const Homepage:React.FC = ():JSX.Element => {
 
 return(
     <div>

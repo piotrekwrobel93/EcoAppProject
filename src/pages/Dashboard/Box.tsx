@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Note } from '../../redux/ducks/userTypes'
 import CheckIcon from '../../shared/icons/CheckIcon'
 import Modal from '../../shared/Modal'
-import DashboardLogic from './Dashboard.logic'
 
 const BoxElement = styled.div`
     width: 300px;
@@ -39,8 +38,6 @@ const Title = styled.div`
     border-bottom-right-radius: 10px;
     background-color: rgba(0, 0, 0, 1);
     transition: all 0.3s ease;
-    @media(max-width: 420px) {
-    }
 `
 
 const TitleTypo = styled.h3`
@@ -53,8 +50,9 @@ const CheckMark = styled.span`
     position: absolute;
     top: 3%;
     right: 3%;
-    z-index: 9999;
+    z-index: 9;
 `
+
 
 
 type Props = {
@@ -62,6 +60,9 @@ type Props = {
     completed?: boolean,
     active?: boolean
 }
+
+
+// BOX COMPONENT
 const Box:React.FC<Props> = ({note, completed} :Props):JSX.Element => {
     const [showModal, setShowModal] = React.useState<boolean>(false)
 
@@ -76,7 +77,7 @@ const Box:React.FC<Props> = ({note, completed} :Props):JSX.Element => {
                 </Title>
                 <Image src={note.mainImage} width="300" height="300" />
             </BoxElement>
-        {showModal && <Modal note={note} setShowModal={setShowModal} completed={completed} />}
+        {showModal && <Modal note={note}  setShowModal={setShowModal} completed={completed} />}
         </React.Fragment>
     )
 }
