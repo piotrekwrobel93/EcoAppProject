@@ -5,17 +5,18 @@ import Login from './pages/Login/Login.ui'
 import NotFound from './pages/NotFound'
 import Register from './pages/Register/Regiser.ui'
 import {auth} from './firebase'
-import { updateUser, useAppDispatch, useAppSelector } from './redux/ducks/user'
+import { updateUser, useAppSelector } from './redux/ducks/user'
 import {listen_on_user_success,listen_on_user_failure} from './redux/ducks/user.actions'
 import Layout from './pages/Layout/Layout'
 import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute'
 import { getItemFromSession } from './lib'
+import { useDispatch } from 'react-redux'
 
 
 type Props = {}
 const App:React.FC = ({} :Props):JSX.Element => {
     const {isLoading} = useAppSelector( state => state.user )
-    const dispatch = useAppDispatch()
+    const dispatch = useDispatch()
     React.useEffect( () => {
         auth.onAuthStateChanged( user => {
             if (user) {
@@ -34,14 +35,14 @@ return(
         <div>
             <Layout>
                 <Switch>
-                    <Route exact path="/">
-                        <Homepage />
-                    </Route>
                     <Route exact path="/login">
                         <Login />
                     </Route>
                     <Route exact path="/register">
                         <Register />
+                    </Route>
+                    <Route exact path="/">
+                        <Homepage />
                     </Route>
                      <Route path="/dashboard">
                         <ProtectedRoute>

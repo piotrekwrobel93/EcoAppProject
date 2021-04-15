@@ -2,8 +2,9 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { getItemFromSession } from '../../lib'
-import { useAppSelector } from '../../redux/ducks/user'
 import Button from '../../shared/Button'
+import Illustration from '../../shared/icons/Illustration'
+import Header from '../Layout/Header'
 
 
 const Wrapper = styled.div`
@@ -67,6 +68,9 @@ return(
                 <HeroTypo>Save The Earth!</HeroTypo>
             <Absolute>
             </Absolute>
+            <div>
+                <Illustration width={200} />
+            </div>
                 <SubHeroTypo>
                     <SubHeroTypoPTag>Think before ... Be happy after</SubHeroTypoPTag>
                     <SubHeroTypoPTag>Join to find out if you are Eco Friendly! It's free!</SubHeroTypoPTag>

@@ -7,6 +7,7 @@ import {
         register_user_success,
         register_user_failure,
         update_user_success,
+        update_user_failure,
         add_completed_note_success
 } from './user.actions'
 import {ThunkAction} from 'redux-thunk'
@@ -27,6 +28,7 @@ const IS_LOADING = 'IS_LOADING'
 const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS'
 const REGISTER_USER_FAILURE = 'REGISTER_USER_FAILURE'
 const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
+const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE'
 const ADD_COMPLETED_NOTE_SUCCESS = 'ADD_COMPLETED_NOTE_SUCCESS'
 
 const {displayName,ecoPoints, newNotes,completedNotes}= JSON.parse(window.localStorage.getItem("localUserData") || '{}')
@@ -35,8 +37,8 @@ const initialState:UserSchema = {
     isLoggedIn: false,
     displayName,
     ecoPoints,
-    completedNotes,
-    newNotes,
+    completedNotes: completedNotes || [],
+    newNotes: newNotes || [],
     error: {message: ''},
     globalError: '',
     isLoading: false,
@@ -74,44 +76,52 @@ export function updateUser():ThunkAction<void, RootState, unknown, Action> {
 
     return async function(dispatch: AppDispatch) {
         // FETCHING ALL NOTES FROM API
+        is_loading(true)
         const response = await fetch('https://peter-notes-api.herokuapp.com/notes', {method: "post"})
         const data:Note[] = await response.json()
 
         let CID = auth.currentUser?.uid  // CURRENT IDENTIFIER
 
-        db.collection('users').doc(CID).onSnapshot( doc => {
+        try {
+            db.collection('users').doc(CID).onSnapshot( doc => {
 
-            // DOC.DATA REPRESENTS USER DATA FROM FIRESTORE
-            // NOW WE NEED TO FILTER THE NOTES FETCHED FROM API AS WE STORE THEIRS IDs
-            let __completedNotes = data.filter( note => {
-                let filteredCompletedNotes // RESULTS
-                doc.data()?.completedNotes.forEach( (item:number) => {
-                    if (note.id === item) {
-                        return filteredCompletedNotes = item
-                    }
+                // FILTER COMPLETED 
+                let __completedNotes = data.filter( note => {
+                    let filteredCompletedNotes // RESULTS
+                    doc.data()?.completedNotes.forEach( (item:number) => {
+                        if (note.id === item) {
+                            return filteredCompletedNotes = item
+                        }
+                    })
+                    return note['id'] === filteredCompletedNotes 
                 })
-                return note['id'] === filteredCompletedNotes 
-            })
-            // SAME FOR NEW NOTES
-            let __notes =data.filter( note => {
-                let obj
-                doc.data()?.completedNotes.forEach( (item:number) => {
-                    if  (note.id === item) {
-                        return obj = item
-                    } 
+    
+                // FILTER NEW NOTES
+                let __notes =data.filter( note => {
+                    let obj
+                    doc.data()?.completedNotes.forEach( (item:number) => {
+                        if  (note.id === item) {
+                            return obj = item
+                        } 
+                    })
+                    return note['id'] !== obj
                 })
-                return note['id'] !== obj
+    
+                const userData = doc.data()
+                const results = { ecoPoints: userData?.ecoPoints, displayName: userData?.displayName,
+                                newNotes: [...__notes], completedNotes: [...__completedNotes] }
+                // SAVE TO LOCALSTORAGE FOR BETTER LOADING PERFORMANCE AND STORE PERSISTENCE
+                window.localStorage.setItem("localUserData", JSON.stringify(results))
+                // DISPATCH
+                dispatch(update_user_success(results))
+                is_loading(false)
             })
-
-            const userData = doc.data()
-            const results = { ecoPoints: userData?.ecoPoints, displayName: userData?.displayName,
-                            newNotes: [...__notes], completedNotes: [...__completedNotes] }
-            // SAVE TO LOCALSTORAGE FOR BETTER LOADING PERFORMANCE AND STORE PERSISTENCE
-            window.localStorage.setItem("localUserData", JSON.stringify(results))
-            // DISPATCH
-            dispatch(update_user_success(results))
-        })
+        } catch (err) {
+            dispatch(update_user_failure({message: err.message}))
+            is_loading(false)
+        }
     }
+        
 }
 
 export const login = (email:string,password:string):ThunkAction<void, RootState, unknown, Action> => {
@@ -175,7 +185,10 @@ export const register:RegisterFunciton = (
                 dispatch(register_user_failure(err))
                 dispatch(is_loading(false))
     })
-        } catch (err) { dispatch(register_user_failure(err));}
+        } catch (err) { 
+            dispatch(register_user_failure(err))
+            dispatch(is_loading(false) 
+        )}
 }
 
 

@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { useDispatch } from "react-redux"
 import { logout, useAppSelector } from "../../redux/ducks/user"
 import {useHistory} from 'react-router-dom'
@@ -6,7 +7,7 @@ type ReturnProps = {
     isLoggedIn: boolean,
 }
 export default ():ReturnProps => {
-
+    const [showHeader, setShowHeader] = React.useState(false) 
     const {isLoggedIn} = useAppSelector( state => state.user)
     const dispatch = useDispatch()
     const history = useHistory<any>()
@@ -15,6 +16,8 @@ export default ():ReturnProps => {
         history.push("/")
         window.sessionStorage.removeItem("isLoggedIn")
     }
+
+
 
     return {handleLogout, isLoggedIn}
 }

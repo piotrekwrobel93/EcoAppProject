@@ -1,8 +1,11 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 
+type ButtonProps = {
+    isDisabled?: boolean
+}
+const _Button = styled.button<ButtonProps>`
 
-const _Button = styled.button`
     width: 130px;
     padding: 1em;
     margin: 1em;
@@ -19,30 +22,33 @@ const _Button = styled.button`
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
-    &:hover {
-        background-color: #fff;
-        color: #40d812;
-        border: 1px solid #40d812;
-        border-radius: 10px;
-        box-shadow: 3px 3px 2px #ddd;
+    :disabled {
+        background: #333;
+    }
+    &:not([disabled]) {
+        &:hover {
+            background-color: #fff;
+            color: #40d812;
+            border: 1px solid #40d812;
+            border-radius: 10px;
+            box-shadow: 3px 3px 2px #ddd;
+        }
     }
     @media(max-width: 400px) {
         width: 100px;
         font-size: 1em;
     }
 `
-type Props = {
-    children: React.ReactNode,
-    onClick?: (event:React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-    className?: string
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    
 }
-const Button = ({children, className, onClick}:Props):JSX.Element => {
+const Button = ({children, ...props}:Props) => {
     return(
-        <>
-         <_Button className={className} onClick={onClick}>
+        <React.Fragment>
+         <_Button {...props} >
                 { children }
         </_Button>   
-        </>
+        </React.Fragment>
     )
 }
 

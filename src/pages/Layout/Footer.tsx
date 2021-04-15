@@ -11,19 +11,16 @@ const FooterElement = styled.footer`
     opacity: 0;
     animation: animation4 2s ease forwards 1s;
     position: relative;
-    z-index: -1;
+    z-index: -10;
 `
 
 
-type Props = {}
-const Footer:React.FC = ({} :Props):JSX.Element => {
+const Footer:React.FC = ():JSX.Element => {
 
 return(
-    <React.Fragment>
-        <FooterElement>
-            <h3><a href="https://peter-sparrow.netlify.app/">-- Created by Piotr Wrobel -- </a></h3>
-        </FooterElement>
-    </React.Fragment>
+    <FooterElement>
+        <a href="https://peter-sparrow.netlify.app/">-- Created by Piotr Wrobel -- </a>
+    </FooterElement>
 )
 }
 

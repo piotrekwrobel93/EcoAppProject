@@ -11,4 +11,5 @@ export const is_loading:ActionCreator = (payload:boolean):Action => ({type:'IS_L
 export const register_user_success:ActionCreator = (payload):Action => ({type:'REGISTER_USER_SUCCESS',payload})
 export const register_user_failure:ActionCreator = (payload:Error):Action => ({type:'REGISTER_USER_FAILURE',payload})
 export const update_user_success:ActionCreator = (payload:any):Action => ({type:'UPDATE_USER_SUCCESS',payload})
+export const update_user_failure:ActionCreator = (payload:any):Action => ({type:'UPDATE_USER_SUCCESS',payload})
 export const add_completed_note_success:ActionCreator = (payload:any):Action => ({type:'ADD_COMPLETED_NOTE_SUCCESS',payload})

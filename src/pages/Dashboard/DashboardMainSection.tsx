@@ -64,6 +64,7 @@ const DashboardMain:React.FC = ():JSX.Element => {
 
     const [activeTab, setActiveTab] = React.useState<boolean>(false)
     const {completedNotes, isLoading, newNotes} = DashboardLogic()
+    
     return(
         <React.Fragment>
             <TypoMain>Your <span style={{color: "#40d812"}}>Eco</span>-Books

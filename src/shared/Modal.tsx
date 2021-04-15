@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { addCompletedNote, useAppDispatch } from '../redux/ducks/user'
 import { Note, UseState } from '../redux/ducks/userTypes'
@@ -8,6 +9,7 @@ import CheckIcon from './icons/CheckIcon'
 const ModalShadow = styled.div`
     width: 100vw;
     height: 100vh;
+    max-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,23 +18,25 @@ const ModalShadow = styled.div`
     top: 0%;
     left: 0%;
     background-color: rgba(0, 0, 0, 0.9);
-    z-index: 99999;
+    z-index: 99998;
     `
 
 
 const ModalBox = styled.div`
     width: 100%;
     max-width: 1000px;
-    overflow: hidden;
-    height: 100%;
-    background-color: #fff;
+    max-height: 100vh;
+    min-height: 80vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
     position: relative;
-    padding: 2em 2em;
+    z-index: 99999;
+    padding: 0em 2em;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 1em;
+    background-color: #fff;
     @media(max-width: 768px) {
         padding: 2em 1.5em;
     }
@@ -67,8 +71,6 @@ const ModalTitle = styled.h1`
         font-size: 1.2em;
     }
 `
-const Section = styled.div`
-`
 const SectionContent = styled.p`
 `
 const ButtonWrapper = styled.div`
@@ -80,8 +82,11 @@ const ButtonWrapper = styled.div`
 const Image = styled.img`
     margin: 2em 0;
     @media (max-width: 768px) {
-        width: 200px;
-        height: 200px;
+        width: 180px;
+        height: 180px;
+    }
+    @media(max-width: 350px) {
+        margin: 1em;
     }
 `
 const DisabledButton = styled(Button)`
@@ -102,7 +107,7 @@ type Props = {
 }
 const Modal:React.FC<Props> = ({note, setShowModal, completed} :Props):JSX.Element => {
     
-    const dispatch = useAppDispatch()
+    const dispatch = useDispatch()
     const handleCompleteNote = () => {
         dispatch(addCompletedNote(note))
     }
@@ -118,15 +123,13 @@ return(
     <React.Fragment>
             <ModalShadow>
                 <ModalBox>
-                        <ModalTitle>{note.title}</ModalTitle>
+                    <ModalTitle>{note.title}</ModalTitle>
                     <Image width="250" height="250" src={note.textImage} />
                     <ClosingIcon onClick={() => setShowModal(false)}>X</ClosingIcon>
                     <ModalContentWrapper>
-                        <Section>
-                            <SectionContent>
-                                {note.content}
-                            </SectionContent>
-                        </Section>
+                    <SectionContent>
+                        {note.content}
+                    </SectionContent>
                         {
                             completed ? (
                                 <ButtonWrapper>
@@ -137,7 +140,7 @@ return(
                                 </ButtonWrapper>
                             ) : (
                                 <ButtonWrapper>
-                                    <Button onClick={ () => handleCompleteNote() }>I understand!</Button>
+                                    <Button onClick={ () => handleCompleteNote() }>Sure!</Button>
                                 </ButtonWrapper>
                             )
                         }

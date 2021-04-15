@@ -37,7 +37,7 @@ const EcoPoints = styled.h1`
 
 const Dashboard:React.FC = ():JSX.Element => {
 
-    const {ecoPoints, displayName} = DashboardLogic()
+    const {ecoPoints, displayName, isLoading} = DashboardLogic()
 // JSX
 return(
     <React.Fragment>
@@ -48,7 +48,12 @@ return(
                     <EcoPoints><span>EcoPoints:</span> {ecoPoints}</EcoPoints>
                 </PointsWrapper>
             </UserInfo>
-            <DashboardMainSection />
+            { 
+                isLoading ? (<p>Loading data...</p>) : (
+                    <DashboardMainSection />
+
+                )
+            }
         </Wrapper>
     </React.Fragment>
 )

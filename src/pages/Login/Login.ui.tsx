@@ -2,13 +2,13 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import LoginLogic from './Login.logic'
 import styled from 'styled-components'
-import Logo from '../../shared/Logo'
 import Button from '../../shared/Button'
+
 
 
 export const LoginWrapper = styled.div`
     width: 100%;
-    height: 90vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content:  center;
@@ -18,8 +18,9 @@ export const LoginWrapper = styled.div`
 export const Form = styled.form`
   display: block;
   width: 300px;
-  padding: 2em;
+  padding: 0 2em;
   box-shadow: 10px 10px 10px #ddd;
+  /* background-color: red; */
 `
 
 export const FormTitle = styled.h3`
@@ -34,15 +35,20 @@ export const FormError = styled.p`
   font-weight: bold;
 `
 
-export const Input = styled.input`
+export const Input = styled.input<any>`
   display: block;
   width: 100%;
   margin: 2em 0;
   padding: 0.5em;
+  height: 55px;
+  position: relative;
   outline-width: none;
   outline: none;
   border: none;
   border-bottom: 1px solid #999;
+  @media(max-width: 500px) {
+    margin: 1em 0;
+  }
 `
 
 export const ButtonWrapper = styled.div`
@@ -68,12 +74,11 @@ const {handleLogin, error, email, setEmail,
 return(
     <React.Fragment>
         <LoginWrapper>
-            <Logo />
                 <Form>
                     <FormTitle>Login</FormTitle>
                     <FormError>{error.message || ''}</FormError>
-                    <Input type="text" placeholder="Email" value={email} onChange={ event => setEmail(event.target.value)}/>
-                    <Input type="password" placeholder="Password" value={password} onChange={ event => setPassword(event.target.value)} />
+                    <Input type="text" placeholder="Email" value={email} onChange={ (event:React.FormEvent<HTMLInputElement>) => setEmail(event.target.value)}/>
+                    <Input type="password" placeholder="Password" value={password} onChange={ (event:React.FormEvent<HTMLInputElement>) => setPassword(event.target.value)} />
                     <BottomInfoText>No Account? <Link to='/register'>Register here.</Link></BottomInfoText>
                     <ButtonWrapper>
                             <Button onClick={(event) => handleLogin(event)}>Login</Button>

@@ -8,8 +8,12 @@ import Button from '../../shared/Button'
 
 
 const Container = styled.div`
+    width: 100%;
     height: 10vh;
     padding: 0 2em;
+    @media(max-width: 400px) {
+        padding: 0 1em;
+    }
 `
 
 const HeaderTag = styled.div`
