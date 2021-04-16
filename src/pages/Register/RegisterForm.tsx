@@ -72,7 +72,7 @@ return(
                     </pre> */}
                     <ButtonWrapper>
                         <Button disabled={!isValid || isSubmitting} type="submit">
-                            {isValid &&  !isSubmitting ? ('Join!') : ('Disabled')}
+                            {isValid  ? ('Join!') : ('Disabled')}
                         </Button>
                     </ButtonWrapper>
                 </Form>
