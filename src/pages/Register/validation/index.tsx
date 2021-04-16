@@ -13,7 +13,7 @@ export const registrationSchema = yup.object().shape({
         yup.string().min(6, passwordError).max(20, passwordError).required(),
 
     passwordConfirmation: 
-        yup.string()
+        yup.string().required()
         .oneOf([yup.ref('password'), null], confirmationError),
 
     username: 
