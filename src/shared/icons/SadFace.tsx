@@ -1,9 +1,9 @@
 import * as React from 'react'
 
 type Props = {
-    width: string | number,
-    height: string | number,
-    fill: string
+    width?: string | number,
+    height?: string | number,
+    fill?: string
 }
 const SadFaceIcon:React.FC<Props> = ({width, height, fill} :Props):JSX.Element => {
 

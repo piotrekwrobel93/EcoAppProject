@@ -57,13 +57,14 @@ const CheckMark = styled.span`
 
 type Props = {
     note: Note,
-    completed?: boolean,
-    active?: boolean
+    active?: boolean,
+    completed: boolean
 }
 
 
 // BOX COMPONENT
 const Box:React.FC<Props> = ({note, completed} :Props):JSX.Element => {
+    // const {}
     const [showModal, setShowModal] = React.useState<boolean>(false)
 
     return(

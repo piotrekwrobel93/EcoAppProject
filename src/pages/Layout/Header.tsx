@@ -9,6 +9,8 @@ import Button from '../../shared/Button'
 
 const Container = styled.div`
     width: 100%;
+    max-width: 2000px;
+    margin: 0 auto;
     height: 10vh;
     padding: 0 2em;
     @media(max-width: 400px) {

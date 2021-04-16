@@ -4,6 +4,7 @@ import { useHistory } from 'react-router'
 import { login, useAppSelector } from '../../redux/ducks/user'
 import { login_user_failure } from '../../redux/ducks/user.actions'
 import { Error, UseState } from '../../redux/ducks/userTypes'
+import DashboardLogic from '../Dashboard/Dashboard.logic'
 
 type ReturnProps = {
     handleLogin: (event: React.MouseEvent<HTMLButtonElement>) => void
@@ -19,7 +20,8 @@ export default ():ReturnProps => {
     
     // REDUX
     const {error} = useAppSelector( state => state.user )
-    const dispatch2 = useDispatch()
+    const dispatch = useDispatch()
+    const {setUrl} = DashboardLogic()
     // UI
     const [email, setEmail] = React.useState<string>('')
     const [password, setPassword] = React.useState<string>('')
@@ -29,16 +31,16 @@ export default ():ReturnProps => {
         event.preventDefault()
         if (email && password && email.includes("@") && email.includes(".") && 
             email.length > 5 && password.length > 5) {
-                dispatch2(login(email, password))
+                dispatch(login(email, password))
                 .then(() => {
                     if (window.localStorage.getItem("sur")) {
                         window.localStorage.removeItem("sur")
-                        history.push("/dashboard")
+                        history.push(setUrl(1, 'new', 2))
                     } 
                 })
                 
         } else {
-            dispatch2(login_user_failure({message:'bud creds mate'}))
+            dispatch(login_user_failure({message:'bud creds mate'}))
         }
     }
     return {

@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { getItemFromSession } from '../../lib'
 import Button from '../../shared/Button'
 import Illustration from '../../shared/icons/Illustration'
-import Header from '../Layout/Header'
 
 
 const Wrapper = styled.div`

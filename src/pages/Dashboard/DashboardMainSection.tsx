@@ -4,7 +4,9 @@ import styled from 'styled-components'
 import Button from '../../shared/Button'
 import Box from './Box'
 import SadFaceIcon from '../../shared/icons/SadFace'
-import HappyFaceIcon from '../../shared/icons/HappyFace'
+import CustomPagination from './Pagination'
+import { Note } from '../../redux/ducks/userTypes'
+import { Link } from 'react-router-dom'
 
 
 export const ShadowedText = styled.span`
@@ -22,10 +24,6 @@ const TypoMain = styled.span`
     @media(max-width: 768px) {
         margin-top: 1em;
     }
-`
-
-const MainSection = styled.div`
-
 `
 
 const ButtonContainer = styled.div`
@@ -53,31 +51,121 @@ const BoxContainer = styled.div`
 const SubTypoMain = styled(TypoMain)`
     font-size: 0.5em;
 `
-
-const Empty = styled.div`
+const IconHolder = styled.div`
     display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: animation3 1s ease forwards 1s;
+    visibility: hidden;
+    margin-bottom: 1em;
+    svg {
+        cursor: pointer;
+            &:hover path {
+            fill: green;
+        }
+    }
 `
-
+const ErrorBox = styled.div`
+    position: fixed;
+    top: 0;
+    right: 5%;
+    width: 200px;
+    height: 100px;
+    background: red;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    color: #fff;
+    animation: animation5 0.5s ease 3s forwards;
+`
 
 
 const DashboardMain:React.FC = ():JSX.Element => {
 
-    const [activeTab, setActiveTab] = React.useState<boolean>(false)
-    const {completedNotes, isLoading, newNotes} = DashboardLogic()
-    
+    const {completedNotesPaginated, notesPerPage, totalNotes, newNotesPaginated, setUrl, totalNewNotes, limit, category, globalError, 
+            handleNewButtonClick, handleCompletedButtonClick} = DashboardLogic()
+
     return(
         <React.Fragment>
+            { globalError.length > 0 && 
+                <ErrorBox>
+                    <p>Ouuups!</p>
+                    <p>{globalError}</p>
+                </ErrorBox>
+            }
             <TypoMain>Your <span style={{color: "#40d812"}}>Eco</span>-Books
-                <SubTypoMain>Read to gain more knowledege<br />and get EcoPoints!</SubTypoMain>
+                <SubTypoMain>Read to gain more knowledge<br />and some EcoPoints!</SubTypoMain>
             </TypoMain>
-
-            <MainSection>
-                <ButtonContainer>
-                    <Button onClick={() => setActiveTab(false)}>New</Button>
-                    <Button onClick={() => setActiveTab(true)}>Completed</Button>
+            <div>
+                <ButtonContainer >
+                    <Link to={setUrl(1,'new', limit)}>
+                        <Button disabled={ category === 'new' && true } onClick={handleNewButtonClick}>New</Button>
+                    </Link>
+                    <Link to={setUrl(1,'completed', limit)}>
+                        <Button disabled={category === 'completed' && true} onClick={handleCompletedButtonClick}>Completed</Button>
+                    </Link>
                 </ButtonContainer>
                 <BoxContainer>
                 {
+                    category === 'completed' ? (
+                        <div style={{display: "flex", flexDirection:"column", alignItems: "center"}}>
+                            <div style={{ width: "100%", display: "flex", maxWidth: "90vw", flexWrap: "wrap", justifyContent: "center", alignItems:"center"}}>
+                                {
+                                    completedNotesPaginated.length > 0 ? (
+                                        completedNotesPaginated.map( (note:Note) => (
+                                            <div key={note.id}>
+                                                <Box note={note} completed={true} />
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <React.Fragment>
+                                            <SadFaceIcon />
+                                            <p style={{ marginLeft: "0.5em"}}>Empty</p>
+                                        </React.Fragment>
+
+                                    )
+                                }
+                            </div>
+                            { completedNotesPaginated.length > 0 && <CustomPagination notesPerPage={notesPerPage} totalNotes={totalNotes} /> }
+                        </div>
+                    ) : (
+                        <div style={{display: "flex", flexDirection:"column", alignItems: "center"}}>
+                            <div style={{ width: "100%", display: "flex", maxWidth: "90vw", flexWrap: "wrap", justifyContent: "center", alignItems:"center"}}>
+                                {
+                                    newNotesPaginated.length > 0 ? (
+                                        newNotesPaginated.map( (note:Note) => (
+                                            <div key={note.id}>
+                                                <Box note={note} completed={false} />
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <React.Fragment>
+                                            <SadFaceIcon />
+                                            <p style={{ marginLeft: "0.5em"}}>Empty</p>
+                                        </React.Fragment>
+                                    )
+                                }
+                            </div>
+                            { newNotesPaginated.length > 0 && <CustomPagination notesPerPage={notesPerPage} totalNotes={totalNewNotes} /> } 
+                        </div>
+                    )
+                }
+                </BoxContainer>
+            </div>
+        </React.Fragment>
+    )
+}
+
+export default DashboardMain   
+
+
+
+/**
+ * 
+ * 
+ * {
                     activeTab ? (
                         completedNotes.length > 0 ? (
                             completedNotes.map((item) => (
@@ -108,11 +196,5 @@ const DashboardMain:React.FC = ():JSX.Element => {
                         )
                     )
                 }   
-
-                </BoxContainer>
-            </MainSection>
-        </React.Fragment>
-    )
-}
-
-export default DashboardMain   
+ * 
+ */

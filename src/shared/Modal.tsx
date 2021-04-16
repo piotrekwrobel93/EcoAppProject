@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { addCompletedNote, useAppDispatch } from '../redux/ducks/user'
+import { addCompletedNote } from '../redux/ducks/user'
 import { Note, UseState } from '../redux/ducks/userTypes'
 import Button from './Button'
 import CheckIcon from './icons/CheckIcon'

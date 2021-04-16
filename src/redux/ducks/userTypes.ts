@@ -17,7 +17,10 @@ export interface UserSchema {
     newNotes: Notes[],
     error: Error,
     globalError: string,
-    isLoading: boolean
+    isLoading: boolean,
+    currentPaginationIndex: number,
+    category: 'new' | 'completed',
+    limit: number
 }
 
 export interface Note {

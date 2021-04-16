@@ -4,9 +4,7 @@ import { useHistory } from "react-router"
 import { register, useAppSelector } from "../../redux/ducks/user"
 import { register_user_failure } from "../../redux/ducks/user.actions"
 import { Error, UseState } from "../../redux/ducks/userTypes"
-
-
-
+import DashboardLogic from "../Dashboard/Dashboard.logic"
 
 
 type RegisterProps = {
@@ -40,6 +38,8 @@ type RegisterFormData = {
 
 
 export default ():ReturnProps => {
+    
+    const {setUrl} = DashboardLogic()
 
     const [email,setEmail] = React.useState<string>('')
     const [username, setUsername] = React.useState<string>('')
@@ -64,7 +64,7 @@ export default ():ReturnProps => {
             .then(() => {
                 if (window.localStorage.getItem("sur")) {
                     window.localStorage.removeItem("sur")
-                    history.push("/dashboard")
+                    history.push(setUrl(1, 'new', 2))
                 }
             }).catch( (err:any) => dispatch(register_user_failure(err)))
     }

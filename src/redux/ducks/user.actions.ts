@@ -13,3 +13,7 @@ export const register_user_failure:ActionCreator = (payload:Error):Action => ({t
 export const update_user_success:ActionCreator = (payload:any):Action => ({type:'UPDATE_USER_SUCCESS',payload})
 export const update_user_failure:ActionCreator = (payload:any):Action => ({type:'UPDATE_USER_SUCCESS',payload})
 export const add_completed_note_success:ActionCreator = (payload:any):Action => ({type:'ADD_COMPLETED_NOTE_SUCCESS',payload})
+export const set_current_pagination_index:ActionCreator = (payload:any):Action => ({type:'SET_CURRENT_PAGINATION_INDEX',payload})
+export const set_current_category:ActionCreator = (payload:any):Action => ({type:'SET_CURRENT_CATEGORY',payload})
+export const set_current_limit:ActionCreator = (payload:any):Action => ({type:'SET_CURRENT_LIMIT',payload})
+export const set_global_error:ActionCreator = (payload:any):Action => ({type:'SET_GLOBAL_ERROR',payload})

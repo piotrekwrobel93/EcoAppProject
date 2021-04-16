@@ -13,7 +13,7 @@ import {
 import {ThunkAction} from 'redux-thunk'
 import {UserSchema, Action, Payload, Note, RegisterFunciton} from './userTypes'
 import {auth, db} from '../../firebase'
- 
+ import {getPagesFromURL} from '../../lib/index'
 
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
@@ -28,11 +28,14 @@ const IS_LOADING = 'IS_LOADING'
 const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS'
 const REGISTER_USER_FAILURE = 'REGISTER_USER_FAILURE'
 const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
-const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE'
 const ADD_COMPLETED_NOTE_SUCCESS = 'ADD_COMPLETED_NOTE_SUCCESS'
+const SET_CURRENT_PAGINATION_INDEX  = 'SET_CURRENT_PAGINATION_INDEX'
+const SET_CURRENT_CATEGORY  = 'SET_CURRENT_CATEGORY'
+const SET_CURRENT_LIMIT = 'SET_CURRENT_LIMIT' 
+const SET_GLOBAL_ERROR = 'SET_GLOBAL_ERROR'
+
 
 const {displayName,ecoPoints, newNotes,completedNotes}= JSON.parse(window.localStorage.getItem("localUserData") || '{}')
-
 const initialState:UserSchema = {
     isLoggedIn: false,
     displayName,
@@ -42,6 +45,9 @@ const initialState:UserSchema = {
     error: {message: ''},
     globalError: '',
     isLoading: false,
+    currentPaginationIndex: getPagesFromURL() || 1,
+    category: 'new',
+    limit: 2
 }
 
 // THUNKS
@@ -243,6 +249,29 @@ export default (state:UserSchema = initialState, action:Action) => {
 
         case ADD_COMPLETED_NOTE_SUCCESS:
             return {...state }
+
+        case SET_CURRENT_PAGINATION_INDEX:
+            return {
+                ...state,
+                currentPaginationIndex: payload
+            }
+
+        case SET_CURRENT_CATEGORY: 
+            return {
+                ...state,
+                category: payload
+            }
+        
+        case SET_CURRENT_LIMIT: 
+            return {
+                ...state, limit: payload
+            }
+
+        case SET_GLOBAL_ERROR: 
+            return {
+                ...state, globalError: payload
+            }
+
     }
     return state
 }
