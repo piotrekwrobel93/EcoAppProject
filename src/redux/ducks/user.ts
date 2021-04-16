@@ -78,7 +78,7 @@ export function addCompletedNote(note: Note) {
     }
 }
 
-export function updateUser():ThunkAction<void, RootState, unknown, Action> {
+export function updateUser() :ThunkAction<void, RootState, unknown, Action> {
 
     return async function(dispatch: AppDispatch) {
         // FETCHING ALL NOTES FROM API
@@ -116,8 +116,10 @@ export function updateUser():ThunkAction<void, RootState, unknown, Action> {
                 const userData = doc.data()
                 const results = { ecoPoints: userData?.ecoPoints, displayName: userData?.displayName,
                                 newNotes: [...__notes], completedNotes: [...__completedNotes] }
+
                 // SAVE TO LOCALSTORAGE FOR BETTER LOADING PERFORMANCE AND STORE PERSISTENCE
                 window.localStorage.setItem("localUserData", JSON.stringify(results))
+                
                 // DISPATCH
                 dispatch(update_user_success(results))
                 is_loading(false)
